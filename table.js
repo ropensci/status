@@ -57,6 +57,22 @@ function docs_icon(job){
 	return $('<span></span>').append(a);
 }
 
+function make_sysdeps(builder){
+	if(builder.sysdeps){
+		var div = $("<div>");
+		var deps = builder.sysdeps.split(/,\s*/);
+		deps.forEach(function(x){
+			var name = x.split(" ")[0];
+			var rest = x.split(" ")[1];
+			var url = 'https://packages.debian.org/testing/' + name;
+			$("<a>").text(name).attr("href", url).appendTo(div);
+			div.append(" " + rest + "\t");
+
+		});
+		return div;
+	}
+}
+
 $(function(){
 	let tbody = $("tbody");
 	var packages = {};
@@ -79,7 +95,7 @@ $(function(){
 					var mac = cranlike.runs && cranlike.runs.find(x => x.type == 'mac') || {};
 					//var date = src && new Date(src.date);
 					var date = src && src.date.substring(0, 10);
-					var sysdeps = src && src.builder && src.builder.sysdeps
+					var sysdeps = src && make_sysdeps(src.builder);
 					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer, docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
 				}
 			});
