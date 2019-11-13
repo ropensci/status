@@ -58,8 +58,8 @@ function docs_icon(job){
 }
 
 function make_sysdeps(builder){
-	if(builder.sysdeps){
-		var div = $("<div>");
+	if(builder && builder.sysdeps){
+		var div = $("<div>").css("max-width", "33vw");
 		var deps = builder.sysdeps.split(/,\s*/);
 		deps.forEach(function(x){
 			var name = x.split(" ")[0];
@@ -73,29 +73,36 @@ function make_sysdeps(builder){
 	}
 }
 
+function make_datestring(x){
+	if(x){
+		return x.substring(0, 10);
+	}
+}
+
 $(function(){
 	let tbody = $("tbody");
+	var jobs = {};
 	var packages = {};
 	get_json('/api/json').then(function(jenkins){
-		jenkins.jobs.forEach(function(job){
-			packages[job.name] = job;
+		jenkins.jobs.forEach(function(x){
+			jobs[x.name] = x;
 		});
 		get_ndjson('/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(x){
-				packages[x.package].cranlike = x;
+				packages[x.package] = x;
 			});
-			Object.keys(packages).forEach(function(name){
-				var info = packages[name];
-				var cranlike = info.cranlike;
+			Object.keys(jobs).forEach(function(name){
+				var info = jobs[name];
+				var cranlike = packages[name];
 				if(!cranlike){
 					tbody.append(tr(["", name, "", "", docs_icon(info), "", "", "", ""]));
 				} else {
 					var src = cranlike.runs && cranlike.runs.find(x => x.type == 'src') || {};
 					var win = cranlike.runs && cranlike.runs.find(x => x.type == 'win') || {};
 					var mac = cranlike.runs && cranlike.runs.find(x => x.type == 'mac') || {};
-					//var date = src && new Date(src.date);
-					var date = src && src.date.substring(0, 10);
-					var sysdeps = src && make_sysdeps(src.builder);
+					//var date = new Date(src.date);
+					var date = make_datestring(src.date);
+					var sysdeps = make_sysdeps(src.builder);
 					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer, docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
 				}
 			});
