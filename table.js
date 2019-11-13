@@ -4,7 +4,8 @@ function get_path(path){
 	return new Promise(function(resolve, reject) {
 		$.get(server + path).done(function(txt){
 			resolve(txt);
-		}).fail((jqXHR, textStatus) => reject("GET " + path + "\nHTTP " + jqXHR.status + "\n\n" + jqXHR.responseText));
+		}).fail((jqXHR, textStatus) => reject("GET " + path + "\nHTTP "
+		   + jqXHR.status + "\n\n" + jqXHR.responseText));
 	});	
 }
 
@@ -103,7 +104,8 @@ $(function(){
 					//var date = new Date(src.date);
 					var date = make_datestring(src.date);
 					var sysdeps = make_sysdeps(src.builder);
-					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer, docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
+					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer, 
+						docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
 				}
 			});
 		}).catch(alert).then(function(x){
