@@ -63,7 +63,7 @@ function make_sysdeps(builder){
 		var deps = builder.sysdeps.split(/,\s*/);
 		deps.forEach(function(x){
 			var name = x.split(" ")[0];
-			var rest = x.split(" ")[1];
+			var rest = x.split(" ")[1].replace(/[0-9.]+:/, '').replace(/[+-].*\)/, ')');
 			var url = 'https://packages.debian.org/testing/' + name;
 			$("<a>").text(name).attr("href", url).appendTo(div);
 			div.append(" " + rest + "\t");
