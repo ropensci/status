@@ -43,7 +43,7 @@ function run_icon(run){
 		var i = $("<i>", {class : 'fa fa-' + iconmap[run.type]});
 		var a = $("<a>").attr('href', run.builder.url).append(i);
 		if(run.builder.status != 'Succeeded'){
-			a.css('color', 'red');
+			a.css('color', '#e05d44');
 		}
 		return $('<span></span>').append(a);
 	}
@@ -53,7 +53,7 @@ function docs_icon(job){
 	var i = $("<i>", {class : 'fa fa-book'});
 	var a = $("<a>").attr('href', job.url).append(i);
 	if(job.color == 'red'){
-		a.css('color', 'red');
+		a.css('color', '#e05d44');
 	}
 	return $('<span></span>').append(a);
 }
