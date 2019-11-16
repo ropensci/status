@@ -104,7 +104,7 @@ $(function(){
 					var src = cranlike.runs && cranlike.runs.find(x => x.type == 'src') || {};
 					var win = cranlike.runs && cranlike.runs.find(x => x.type == 'win') || {};
 					var mac = cranlike.runs && cranlike.runs.find(x => x.type == 'mac') || {};
-					var date = (new Date(src.builder.timestamp * 1000 || src.date)).yyyymmdd();
+					var date = (new Date(src.builder && src.builder.timestamp * 1000 || src.date)).yyyymmdd();
 					var sysdeps = make_sysdeps(src.builder);
 					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer,
 						docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
