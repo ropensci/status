@@ -74,11 +74,14 @@ function make_sysdeps(builder){
 	}
 }
 
-function make_datestring(x){
-	if(x){
-		return x.substring(0, 10);
+Date.prototype.yyyymmdd = function() {
+	if(!isNaN(this.getTime())){
+		var yyyy = this.getFullYear();
+		var mm = this.getMonth() + 1; // getMonth() is zero-based
+		var dd = this.getDate();
+		return [yyyy, (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-');
 	}
-}
+};
 
 $(function(){
 	let tbody = $("tbody");
@@ -101,10 +104,9 @@ $(function(){
 					var src = cranlike.runs && cranlike.runs.find(x => x.type == 'src') || {};
 					var win = cranlike.runs && cranlike.runs.find(x => x.type == 'win') || {};
 					var mac = cranlike.runs && cranlike.runs.find(x => x.type == 'mac') || {};
-					//var date = new Date(src.date);
-					var date = make_datestring(src.date);
+					var date = (new Date(src.builder.timestamp * 1000 || src.date)).yyyymmdd();
 					var sysdeps = make_sysdeps(src.builder);
-					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer, 
+					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer,
 						docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
 				}
 			});
