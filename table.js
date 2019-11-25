@@ -61,15 +61,17 @@ function docs_icon(job){
 function make_sysdeps(builder){
 	if(builder && builder.sysdeps){
 		var div = $("<div>").css("max-width", "33vw");
-		var deps = builder.sysdeps.split(/,\s*/);
-		deps.forEach(function(x){
-			var name = x.split(" ")[0];
-			var rest = x.split(" ")[1].replace(/[0-9.]+:/, '').replace(/[+-].*\)/, ')');
-			var url = 'https://packages.debian.org/testing/' + name;
-			$("<a>").text(name).attr("href", url).appendTo(div);
-			div.append(" " + rest + "\t");
-
-		});
+		if(Array.isArray(builder.sysdeps)){
+			builder.sysdeps.forEach(function(x){
+				var name = x.package;
+				var url = 'https://packages.debian.org/testing/' + name;
+				$("<a>").text(name).attr("href", url).appendTo(div);
+				var version = x.version.replace(/[0-9.]+:/, '').replace(/[+-].*/, '');
+				div.append(" (" + version + ")\t");
+			});
+		} else {
+			div.append(builder.sysdeps);
+		}
 		return div;
 	}
 }
