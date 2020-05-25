@@ -64,7 +64,8 @@ function make_sysdeps(builder){
 		if(Array.isArray(builder.sysdeps)){
 			builder.sysdeps.forEach(function(x){
 				var name = x.package;
-				var url = 'https://packages.debian.org/testing/' + name;
+				//var url = 'https://packages.debian.org/testing/' + name;
+				var url = 'https://packages.ubuntu.com/bionic/' + name;
 				$("<a>").text(name).attr("href", url).appendTo(div);
 				var version = x.version.replace(/[0-9.]+:/, '').replace(/[+-].*/, '');
 				div.append(" (" + version + ")\t");
