@@ -65,7 +65,10 @@ function make_sysdeps(builder){
 			builder.sysdeps.forEach(function(x){
 				var name = x.package;
 				//var url = 'https://packages.debian.org/testing/' + name;
-				var url = 'https://packages.ubuntu.com/bionic/' + name;
+				var distro = builder.distro;
+				if(distro == "$(OS_DISTRO)")
+					distro = 'bionic'
+				var url = 'https://packages.ubuntu.com/' + distro + '/' + name;
 				$("<a>").text(name).attr("href", url).appendTo(div);
 				var version = x.version.replace(/[0-9.]+:/, '').replace(/[+-].*/, '');
 				div.append(" (" + version + ")\t");
