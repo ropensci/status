@@ -92,29 +92,22 @@ Date.prototype.yyyymmdd = function() {
 $(function(){
 	let tbody = $("tbody");
 	var jobs = {};
-	var packages = {};
 	get_json('/api/json').then(function(jenkins){
 		jenkins.jobs.forEach(function(x){
 			jobs[x.name] = x;
 		});
 		get_ndjson('/stats/checks').then(function(cranlike){
-			cranlike.forEach(function(x){
-				packages[x.package] = x;
-			});
-			Object.keys(jobs).forEach(function(name){
+			cranlike.forEach(function(pkg){
+				var name = pkg.package;
 				var info = jobs[name];
-				var cranlike = packages[name];
-				if(!cranlike){
-					tbody.append(tr(["", name, "", "", docs_icon(info), "", "", "", ""]));
-				} else {
-					var src = cranlike.runs && cranlike.runs.find(x => x.type == 'src') || {};
-					var win = cranlike.runs && cranlike.runs.find(x => x.type == 'win') || {};
-					var mac = cranlike.runs && cranlike.runs.find(x => x.type == 'mac') || {};
-					var date = (new Date(src.builder && src.builder.timestamp * 1000 || src.date)).yyyymmdd();
-					var sysdeps = make_sysdeps(src.builder);
-					tbody.append(tr([date, cranlike.package, cranlike.version, cranlike.maintainer,
-						docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
-				}
+				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
+				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
+				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
+				var date = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || pkg.runs[0].date)).yyyymmdd();
+				var sysdeps = make_sysdeps(src.builder);
+				tbody.append(tr([date, pkg.package, pkg.version, pkg.maintainer,
+					docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
+				
 			});
 		}).catch(alert).then(function(x){
 			var defs = [{
