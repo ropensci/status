@@ -42,7 +42,7 @@ function run_icon(run){
 	if(run && run.builder){
 		var i = $("<i>", {class : 'fa fa-' + iconmap[run.type]});
 		var a = $("<a>").attr('href', run.builder.url).append(i);
-		if(run.builder.status != 'Succeeded'){
+		if(!run.builder.status.match(/succ/i)){ // can be success or Succeeded
 			a.css('color', '#e05d44');
 		}
 		return $('<span></span>').append(a);
