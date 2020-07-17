@@ -96,12 +96,12 @@ $(function(){
 	var jobs = {};
 	get_json('/api/json').then(function(jenkins){
 		jenkins.jobs.forEach(function(x){
-			jobs[x.name] = x;
+			jobs[x.name.toLowerCase()] = x;
 		});
 		get_ndjson('/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
 				var name = pkg.package;
-				var info = jobs[name] || {};
+				var info = jobs[name.toLowerCase()] || {};
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
 				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
 				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
