@@ -50,12 +50,14 @@ function run_icon(run){
 }
 
 function docs_icon(job){
-	var i = $("<i>", {class : 'fa fa-book'});
-	var a = $("<a>").attr('href', job.url).append(i);
-	if(job.color == 'red'){
-		a.css('color', '#e05d44');
+	if(job && job.url){
+		var i = $("<i>", {class : 'fa fa-book'});
+		var a = $("<a>").attr('href', job.url).append(i);
+		if(job.color == 'red'){
+			a.css('color', '#e05d44');
+		}
+		return $('<span></span>').append(a);
 	}
-	return $('<span></span>').append(a);
 }
 
 function make_sysdeps(builder){
@@ -99,7 +101,7 @@ $(function(){
 		get_ndjson('/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
 				var name = pkg.package;
-				var info = jobs[name];
+				var info = jobs[name] || {};
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
 				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
 				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
