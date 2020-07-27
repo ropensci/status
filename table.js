@@ -105,10 +105,11 @@ $(function(){
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
 				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
 				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
-				var date = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || pkg.runs[0].date)).yyyymmdd();
+				var published = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || NaN)).yyyymmdd() || "";
+				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd() || "";
 				var sysdeps = make_sysdeps(src.builder);
-				tbody.append(tr([date, pkg.package, pkg.version, pkg.maintainer,
-					docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), sysdeps]));
+				tbody.append(tr([published, pkg.package, pkg.version, pkg.maintainer,
+					docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), builddate, sysdeps]));
 				
 			});
 		}).catch(alert).then(function(x){
