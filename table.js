@@ -88,6 +88,8 @@ Date.prototype.yyyymmdd = function() {
 		var mm = this.getMonth() + 1; // getMonth() is zero-based
 		var dd = this.getDate();
 		return [yyyy, (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('-');
+	} else {
+		return "";
 	}
 };
 
@@ -105,8 +107,8 @@ $(function(){
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
 				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
 				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
-				var published = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || NaN)).yyyymmdd() || "";
-				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd() || "";
+				var published = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || NaN)).yyyymmdd();
+				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd();
 				var sysdeps = make_sysdeps(src.builder);
 				tbody.append(tr([published, pkg.package, pkg.version, pkg.maintainer,
 					docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), builddate, sysdeps]));
