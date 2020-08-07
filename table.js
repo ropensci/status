@@ -122,7 +122,8 @@ $(function(){
 		}).catch(alert).then(function(x){
 			var defs = [{
 				targets: [4, 5, 7, 8],
-				className: 'dt-body-center'
+				className: 'dt-body-center',
+				orderable: false
 			}];
 			$("table").DataTable({paging: false, fixedHeader: true, columnDefs: defs, order: [[ 0, "desc" ]]});
 			//$('div.dataTables_filter').appendTo("thead").css('margin-bottom', '-80px').css('padding', 0).css('float', 'right');
