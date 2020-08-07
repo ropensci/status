@@ -102,21 +102,24 @@ $(function(){
 		});
 		get_ndjson('/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
+				console.log(pkg)
 				var name = pkg.package;
 				var info = jobs[name.toLowerCase()] || {};
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
-				var win = pkg.runs && pkg.runs.find(x => x.type == 'win') || {};
-				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac') || {};
+				var win = pkg.runs && pkg.runs.find(x => x.type == 'win' && x.built.R.substring(0,3) == '4.0') || {};
+				var mac = pkg.runs && pkg.runs.find(x => x.type == 'mac' && x.built.R.substring(0,3) == '4.0') || {};
+				var oldwin = pkg.runs && pkg.runs.find(x => x.type == 'win' && x.built.R.substring(0,3) == '3.6') || {};
+				var oldmac = pkg.runs && pkg.runs.find(x => x.type == 'mac' && x.built.R.substring(0,3) == '3.6') || {};
 				var published = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.timestamp * 1000 || NaN)).yyyymmdd();
 				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd();
 				var sysdeps = make_sysdeps(src.builder);
-				tbody.append(tr([published, pkg.package, pkg.version, pkg.maintainer,
-					docs_icon(info), run_icon(win), run_icon(mac), run_icon(src), builddate, sysdeps]));
+				tbody.append(tr([published, pkg.package, pkg.version, pkg.maintainer, docs_icon(info), run_icon(src),
+					builddate, run_icon(win), run_icon(mac), run_icon(oldwin), run_icon(oldmac), sysdeps]));
 				
 			});
 		}).catch(alert).then(function(x){
 			var defs = [{
-				targets: [4, 5, 6, 7],
+				targets: [4, 5, 7, 8],
 				className: 'dt-body-center'
 			}];
 			$("table").DataTable({paging: false, fixedHeader: true, columnDefs: defs, order: [[ 0, "desc" ]]});
