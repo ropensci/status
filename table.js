@@ -41,11 +41,13 @@ function run_icon(run){
 	};
 	if(run && run.builder){
 		var i = $("<i>", {class : 'fa fa-' + iconmap[run.type]});
-		var a = $("<a>").attr('href', run.builder.url).append(i);
+		var a = $("<a>").attr('href', run.builder.url).append(i).css('margin-left', '5px');
 		if(!run.builder.status.match(/succ/i)){ // can be success or Succeeded
 			a.css('color', '#e05d44');
 		}
 		return $('<span></span>').append(a);
+	} else {
+		return $("<i>", {class : 'fa fa-times'}).css('margin-left', '5px');
 	}
 }
 
@@ -114,7 +116,7 @@ $(function(){
 				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd();
 				var sysdeps = make_sysdeps(src.builder);
 				tbody.append(tr([published, pkg.package, pkg.version, pkg.maintainer, docs_icon(info), run_icon(src),
-					builddate, run_icon(win), run_icon(mac), run_icon(oldwin), run_icon(oldmac), sysdeps]));
+					builddate, [run_icon(win), run_icon(mac)], [run_icon(oldwin), run_icon(oldmac)], sysdeps]));
 				
 			});
 		}).catch(alert).then(function(x){
