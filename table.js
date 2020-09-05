@@ -40,12 +40,15 @@ function run_icon(run){
 	if(run && run.builder){
 		var i = $("<i>", {class : 'fa fa-' + iconmap[run.type]});
 		var a = $("<a>").attr('href', run.builder.url).append(i).css('margin-left', '5px');
-		if(!run.builder.status.match(/succ/i)){ // can be success or Succeeded
-			a.css('color', '#e05d44');
+		 // can be "success" or "Succeeded"
+		if(run.builder.status.match(/succ/i)){
+			i.css('color', '#22863a');
+		} else {
+			i.css('color', 'slategrey');
 		}
 		return $('<span></span>').append(a);
 	} else {
-		return $("<i>", {class : 'fa fa-times'}).css('margin-left', '5px');
+		return $("<i>", {class : 'fa fa-times'}).css('margin-left', '5px').css('color', '#cb2431');
 	}
 }
 
