@@ -105,7 +105,7 @@ $(function(){
 		});
 		get_ndjson('https://cran.dev/:any/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
-				console.log(pkg)
+				//console.log(pkg)
 				var name = pkg.package;
 				var info = jobs[name.toLowerCase()] || {};
 				var src = pkg.runs && pkg.runs.find(x => x.type == 'src') || {};
@@ -125,11 +125,11 @@ $(function(){
 			});
 		}).catch(alert).then(function(x){
 			var defs = [{
-				targets: [5, 7, 8, 9],
+				targets: [5, 6, 8, 9],
 				className: 'dt-body-center',
 				orderable: false
 			}];
-			$("table").DataTable({paging: false, fixedHeader: true, columnDefs: defs, order: [[ 0, "desc" ]]});
+			$("table").DataTable({pageLength: 100, fixedHeader: true, columnDefs: defs, order: [[ 0, "desc" ]]});
 			//$('div.dataTables_filter').appendTo("thead").css('margin-bottom', '-80px').css('padding', 0).css('float', 'right');
 		});
 	});
