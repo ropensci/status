@@ -114,7 +114,7 @@ $(function(){
 				var builddate = (new Date(pkg.runs[0].builder && pkg.runs[0].builder.date * 1000 || NaN)).yyyymmdd();
 				var sysdeps = make_sysdeps(src.builder);
 				var pkglink = $("<a>").text(pkg.package).
-					attr("href", 'https://docs.ropensci.org/' + pkg.package).
+					attr("href", src.builder ? src.builder.upstream : undefined).
 					attr("target", "_blank");
 				tbody.append(tr([published, pkg.user, pkglink, pkg.version, pkg.maintainer, docs_icon(info), run_icon(src),
 					builddate, [run_icon(win), run_icon(mac)], [run_icon(oldwin), run_icon(oldmac)], sysdeps]));
