@@ -1,8 +1,6 @@
-let server = 'https://dev.ropensci.org';
-
 function get_path(path){
 	return new Promise(function(resolve, reject) {
-		$.get(server + path).done(function(txt){
+		$.get(path).done(function(txt){
 			resolve(txt);
 		}).fail((jqXHR, textStatus) => reject("GET " + path + "\nHTTP "
 		   + jqXHR.status + "\n\n" + jqXHR.responseText));
@@ -98,11 +96,11 @@ Date.prototype.yyyymmdd = function() {
 $(function(){
 	let tbody = $("tbody");
 	var jobs = {};
-	get_json('/api/json').then(function(jenkins){
+	get_json('https://dev.ropensci.org/api/json').then(function(jenkins){
 		jenkins.jobs.forEach(function(x){
 			jobs[x.name.toLowerCase()] = x;
 		});
-		get_ndjson('/stats/checks').then(function(cranlike){
+		get_ndjson('https://cran.dev/:any/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
 				console.log(pkg)
 				var name = pkg.package;
@@ -118,13 +116,13 @@ $(function(){
 				var pkglink = $("<a>").text(pkg.package).
 					attr("href", 'https://docs.ropensci.org/' + pkg.package).
 					attr("target", "_blank");
-				tbody.append(tr([published, pkglink, pkg.version, pkg.maintainer, docs_icon(info), run_icon(src),
+				tbody.append(tr([published, pkg.user, pkglink, pkg.version, pkg.maintainer, docs_icon(info), run_icon(src),
 					builddate, [run_icon(win), run_icon(mac)], [run_icon(oldwin), run_icon(oldmac)], sysdeps]));
 				
 			});
 		}).catch(alert).then(function(x){
 			var defs = [{
-				targets: [4, 5, 7, 8],
+				targets: [5, 7, 8, 9],
 				className: 'dt-body-center',
 				orderable: false
 			}];
