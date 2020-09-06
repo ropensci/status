@@ -103,6 +103,7 @@ $(function(){
 		jenkins.jobs.forEach(function(x){
 			jobs[x.name.toLowerCase()] = x;
 		});
+	}).finally(function(){
 		get_ndjson('https://cran.dev/:any/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
 				//console.log(pkg)
