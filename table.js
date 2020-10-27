@@ -104,7 +104,7 @@ $(function(){
 			jobs[x.name.toLowerCase()] = x;
 		});
 	}).finally(function(){
-		get_ndjson('https://r-universe.dev/:any/stats/checks').then(function(cranlike){
+		get_ndjson('https://r-universe.dev/ropensci/stats/checks').then(function(cranlike){
 			cranlike.forEach(function(pkg){
 				//console.log(pkg)
 				var name = pkg.package;
